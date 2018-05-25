@@ -26,7 +26,7 @@ public:
      * \param i Index
      * \warning No check in i
      */
-    char at(unsigned int i) const;
+    char at(uint16 i) const;
 
     /*!
      * \brief Length of the string
@@ -41,7 +41,7 @@ public:
      *
      * Calls str::String::at
      */
-    char operator[](unsigned int i) const;
+    char operator[](uint16 i) const;
 
 private:
 

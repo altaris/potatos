@@ -2,14 +2,14 @@
 #include <std/string.h>
 
 void io::Screen::clear() const {
-    for (unsigned int i = 0; i < io::Screen::height * io::Screen::width; i++) {
+    for (uint16 i = 0; i < io::Screen::height * io::Screen::width; i++) {
         _videoMemory[i] = 0x0000;
     }
 }
 
 void io::Screen::print(
-        unsigned int x,
-        unsigned int y,
+        uint16 x,
+        uint16 y,
         char c,
         io::Screen::Color bg,
         io::Screen::Color fg) const {
@@ -19,8 +19,8 @@ void io::Screen::print(
 }
 
 void io::Screen::print(
-        unsigned int x,
-        unsigned int y,
+        uint16 x,
+        uint16 y,
         std::String str,
         io::Screen::Color bg,
         io::Screen::Color fg) const {
@@ -36,7 +36,7 @@ void io::Screen::print(
 }
 
 void io::Screen::print(
-        unsigned int i,
+        uint16 i,
         char c,
         io::Screen::Color bg,
         io::Screen::Color fg) const {

@@ -1,6 +1,8 @@
 #ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_IO_SCREEN_H_
 #define DOCUMENTS_PROJECTS_POTATOS_SRC_IO_SCREEN_H_
 
+#include <global.h>
+
 namespace std {
 
 class String;
@@ -23,13 +25,13 @@ public:
      *
      * Default width of the screen (in characters)
      */
-    static constexpr unsigned short int width  = 80;
+    static constexpr uint16 width  = 80;
     /*!
      * \brief Default height
      *
      * Default height of the screen (in characters)
      */
-    static constexpr unsigned short height = 25;
+    static constexpr uint16 height = 25;
 
     /*!
      * \brief Available colors
@@ -72,8 +74,8 @@ public:
      * \param bg Background color
      * \param fg Foreground color
      */
-    void print(unsigned int x,
-               unsigned int y,
+    void print(uint16 x,
+               uint16 y,
                char c,
                Color bg = Black,
                Color fg = LightGrey) const;
@@ -88,8 +90,8 @@ public:
      *
      * Checks that str isn't too long
      */
-    void print(unsigned int x,
-               unsigned int y,
+    void print(uint16 x,
+               uint16 y,
                std::String str,
                Color bg = Black,
                Color fg = LightGrey) const;
@@ -99,7 +101,7 @@ private:
     /*!
      * \brief Pointer to video memory
      */
-    static constexpr unsigned short* _videoMemory = (unsigned short*) 0xb8000;
+    static constexpr uint16* _videoMemory = (uint16*) 0xb8000;
 
 private:
 
@@ -110,7 +112,7 @@ private:
      * \param bg Background color
      * \param fg Foreground color
      */
-    void print(unsigned int i,
+    void print(uint16 i,
                char c,
                Color bg = Black,
                Color fg = LightGrey) const;

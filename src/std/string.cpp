@@ -4,7 +4,7 @@ std::String::String(char* str) :
     _str(str) {
 }
 
-char std::String::at(unsigned int i) const {
+char std::String::at(uint16 i) const {
     return _str[i];
 }
 
@@ -20,6 +20,6 @@ unsigned int std::String::length() const {
     }
 }
 
-char std::String::operator[](unsigned int i) const {
+char std::String::operator[](uint16 i) const {
     return at(i);
 }
