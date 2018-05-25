@@ -1,15 +1,31 @@
-#include <utils.h>
+#include <global.h>
+
+#include <io/screen.h>
+#include <std/string.h>
+
+typedef void (*Constructor)();
 
 /*!
- * \brief printf
- * \param str
+ * \brief Pointer to the begening of the constructor array
  */
-void printf (
-    char* str
-) {
-    static unsigned short * VideoMemory = (unsigned short *) 0xb8000;
-    for (int i = 0; str[i] != '\0'; i++) {
-        VideoMemory[i] = (VideoMemory[i] & 0xff00) | str[i];
+extern "C"
+Constructor start_ctors;
+
+/*!
+ * \brief Pointer to the end of the constructor array
+ */
+extern "C"
+Constructor end_ctors;
+
+/*!
+ * \brief Calls all constructors
+ *
+ * That is, constructs all global objects. This is called before kernelMain
+ */
+extern "C"
+void callConstructors() {
+    for (Constructor* i = &start_ctors; i != &end_ctors; i++) {
+        (*i)();
     }
 }
 
@@ -19,15 +35,17 @@ void printf (
  * \param multibootMagic Value of the magic number (?)
  */
 extern "C"
-void kernelMain (
-    const void * multibootStructure,
-    unsigned int multibootMagic
-) {
+void kernelMain(const void* multibootStructure, unsigned int multibootMagic) {
     UNUSED(multibootStructure);
     UNUSED(multibootMagic);
 
+    io::Screen scr;
+    scr.clear();
+    scr.print(1, 1,
+              std::String("Hello World! This is my OS!"),
+              io::Screen::Blue,
+              io::Screen::Red);
 
-    printf("Hello World! This is my OS!");
-
-    while(1);
+    while (1) {
+    }
 }

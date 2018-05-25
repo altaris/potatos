@@ -5,7 +5,7 @@ CONFIG          =
 TEMPLATE        =
 
 QMAKE_CXX       = gcc
-QMAKE_CXXFLAGS  = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
+QMAKE_CXXFLAGS  = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings -std=c++11
 QMAKE_LINK      = ld
 QMAKE_LFLAGS    = -melf_i386 -T $${PWD}/linker.ld
 QMAKE_LFLAGS_DEBUG   =
@@ -22,16 +22,22 @@ asm.commands    = $${QMAKE_AS} $${QMAKE_ASFLAGS} ${QMAKE_FILE_IN} -o ${QMAKE_FIL
 QMAKE_EXTRA_COMPILERS += asm
 
 INCLUDEPATH     = \
-    include
+    src
 
 SOURCES        += \
-    src/main.cpp
+    src/main.cpp \
+    src/io/screen.cpp \
+    src/std/string.cpp
 
 HEADERS        += \
-    include/utils.h
+    src/global.h \
+    src/io/screen.h \
+    src/std/string.h
 
 DISTFILES += \
-    readme.md
+    readme.md \
+    makefile \
+    linker.ld
 
 
 

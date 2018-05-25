@@ -10,13 +10,15 @@
 .section .text
 .global loader
 
+.extern callConstructors
 .extern kernelMain
 
 loader:
     mov $kernel_stack, %esp
+    call callConstructors   # constructs all global objects
     push %eax               # multibootStructure main argument
     push %ebx               # multibootMagic main argument
-    call kernelMain
+    call kernelMain         # kermel main
 
 _stop:
     cli
