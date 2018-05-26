@@ -1,5 +1,7 @@
 #include <global.h>
 
+#include <mem/globaldescriptortable.h>
+
 #include <io/screen.h>
 #include <std/string.h>
 
@@ -38,6 +40,8 @@ extern "C"
 void kernelMain(const void* multibootStructure, unsigned int multibootMagic) {
     UNUSED(multibootStructure);
     UNUSED(multibootMagic);
+
+    mem::GlobalDescriptorTable gdt;
 
     io::Screen scr;
     scr.clear();

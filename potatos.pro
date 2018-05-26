@@ -27,12 +27,14 @@ INCLUDEPATH     = \
 SOURCES        += \
     src/main.cpp \
     src/io/screen.cpp \
-    src/std/string.cpp
+    src/std/string.cpp \
+    src/mem/globaldescriptortable.cpp
 
 HEADERS        += \
     src/global.h \
     src/io/screen.h \
-    src/std/string.h
+    src/std/string.h \
+    src/mem/globaldescriptortable.h
 
 DISTFILES += \
     readme.md \
