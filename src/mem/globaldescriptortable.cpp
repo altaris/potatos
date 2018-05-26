@@ -36,7 +36,7 @@ mem::GlobalDescriptorTable::GlobalDescriptorTable() :
     asm volatile("lgdt %0": :"m" (ptr));
 }
 
-mem::GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(
+mem::GlobalDescriptorTable::Entry::Entry(
         uint32 base,
         uint32 limit,
         AccessBlock access) {
@@ -46,21 +46,21 @@ mem::GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(
     _flags.unused = 0x00;
 }
 
-mem::GlobalDescriptorTable::SegmentDescriptor::AccessBlock
-mem::GlobalDescriptorTable::SegmentDescriptor::access() const {
+mem::GlobalDescriptorTable::Entry::AccessBlock
+mem::GlobalDescriptorTable::Entry::access() const {
     return _access;
 }
 
-uint32 mem::GlobalDescriptorTable::SegmentDescriptor::base() const {
+uint32 mem::GlobalDescriptorTable::Entry::base() const {
     return (_base_high << 24) + _base_low;
 }
 
-mem::GlobalDescriptorTable::SegmentDescriptor::FlagsBlock
-mem::GlobalDescriptorTable::SegmentDescriptor::flags() const {
+mem::GlobalDescriptorTable::Entry::FlagsBlock
+mem::GlobalDescriptorTable::Entry::flags() const {
     return _flags;
 }
 
-uint32 mem::GlobalDescriptorTable::SegmentDescriptor::limit() const {
+uint32 mem::GlobalDescriptorTable::Entry::limit() const {
     uint32 result = (_limit_high << 16) + _limit_low;
     if (_flags.granularity && _flags.size) {
         result = (result << 12) | 0xFFF;
@@ -68,40 +68,32 @@ uint32 mem::GlobalDescriptorTable::SegmentDescriptor::limit() const {
     return result;
 }
 
-void mem::GlobalDescriptorTable::SegmentDescriptor::setAccess(
-        mem::GlobalDescriptorTable::SegmentDescriptor::AccessBlock access) {
+void mem::GlobalDescriptorTable::Entry::setAccess(
+        mem::GlobalDescriptorTable::Entry::AccessBlock access) {
     _access = access;
 }
 
-void mem::GlobalDescriptorTable::SegmentDescriptor::setBase(uint32 base) {
+void mem::GlobalDescriptorTable::Entry::setBase(uint32 base) {
     _base_low = base & 0xFFFFFF;
     _base_high = (base >> 24) & 0xFF;
 }
 
-void mem::GlobalDescriptorTable::SegmentDescriptor::setFlags(
-        mem::GlobalDescriptorTable::SegmentDescriptor::FlagsBlock flags) {
+void mem::GlobalDescriptorTable::Entry::setFlags(
+        mem::GlobalDescriptorTable::Entry::FlagsBlock flags) {
     _flags = flags;
 }
 
-void mem::GlobalDescriptorTable::SegmentDescriptor::setLimit(uint32 limit) {
+void mem::GlobalDescriptorTable::Entry::setLimit(uint32 limit) {
     _flags.size = 0x1;
     if (limit <= 65536) {   // 16-bit address space
         _flags.granularity = 0x0;
     } else {                // 32-bit address space
         _flags.granularity = 0x1;
-        // Now we have to squeeze the 32 bits limit into 2.5 regiters (20 bits),
-        // Hence discard 12 bits. The CPU will pad the 20 bits limit in the
-        // segment descriptor with 1s.
         if ((limit & 0xFFF) != 0xFFF) {
-            // Case 1: If not all of those lower 12 bits are 0, then discarding
-            // them looses information. We still have to do that, but then the
-            // CPU will compute a limit that is higher than the one we really
-            // have, so we compensate by decreasing a higher bit. This trick
-            // yields at most 4095 wasted bytes in memory.
+            // Case 1: If not all of those lower 12 bits are 0.
             limit = (limit >> 12) - 1;
         } else {
-            // Case 2: If the 12 least significan buts are all 1, then we just
-            // discard them, and the CPU will add them back later.
+            // Case 2: All 12 least significant bits are all 1.
             limit = limit >> 12;
         }
     }
