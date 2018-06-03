@@ -1,5 +1,5 @@
-#ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT32_H_
-#define DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT32_H_
+#ifndef SRC_IO_PORT32_H_
+#define SRC_IO_PORT32_H_
 
 #include <io/port.h>
 
@@ -12,7 +12,7 @@ class Port32 : public io::Port {
 
 public:
 
-    Port32(uint16 port);
+    explicit Port32(uint16 port);
 
     /*!
      * \brief Reads data from the port
@@ -28,4 +28,4 @@ public:
 
 }  // namespace io
 
-#endif  // DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT32_H_
+#endif  // SRC_IO_PORT32_H_

@@ -1,5 +1,5 @@
-#ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_IO_SCREEN_H_
-#define DOCUMENTS_PROJECTS_POTATOS_SRC_IO_SCREEN_H_
+#ifndef SRC_IO_SCREEN_H_
+#define SRC_IO_SCREEN_H_
 
 #include <global.h>
 
@@ -122,5 +122,5 @@ private:
 
 }  // namespace io
 
-#endif  // DOCUMENTS_PROJECTS_POTATOS_SRC_IO_SCREEN_H_
+#endif  // SRC_IO_SCREEN_H_
 

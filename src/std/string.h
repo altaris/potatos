@@ -1,5 +1,5 @@
-#ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_STD_STRING_H_
-#define DOCUMENTS_PROJECTS_POTATOS_SRC_STD_STRING_H_
+#ifndef SRC_STD_STRING_H_
+#define SRC_STD_STRING_H_
 
 #include <global.h>
 
@@ -59,5 +59,5 @@ private:
 
 }  // namespace std
 
-#endif  // DOCUMENTS_PROJECTS_POTATOS_SRC_STD_STRING_H_
+#endif  // SRC_STD_STRING_H_
 

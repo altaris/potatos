@@ -1,5 +1,5 @@
-#ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT_H_
-#define DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT_H_
+#ifndef SRC_IO_PORT_H_
+#define SRC_IO_PORT_H_
 
 #include <global.h>
 
@@ -12,7 +12,7 @@ class Port {
 
 protected:
 
-    Port(uint16 port);
+    explicit Port(uint16 port);
 
 protected:
 
@@ -25,4 +25,4 @@ protected:
 
 }  // namespace io
 
-#endif  // DOCUMENTS_PROJECTS_POTATOS_SRC_IO_PORT_H_
+#endif  // SRC_IO_PORT_H_

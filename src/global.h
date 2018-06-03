@@ -1,5 +1,5 @@
-#ifndef DOCUMENTS_PROJECTS_POTATOS_SRC_GLOBAL_H_
-#define DOCUMENTS_PROJECTS_POTATOS_SRC_GLOBAL_H_
+#ifndef SRC_GLOBAL_H_
+#define SRC_GLOBAL_H_
 
 // NOLINTNEXTLINE
 #define UNUSED(x) (void) x
@@ -51,4 +51,4 @@ constexpr uint32 operator"" _GB (unsigned long long int n) {
     return 1024 * 1024 * 1024 * n;
 }
 
-#endif  // DOCUMENTS_PROJECTS_POTATOS_SRC_GLOBAL_H_
+#endif  // SRC_GLOBAL_H_
