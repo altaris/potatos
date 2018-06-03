@@ -28,13 +28,21 @@ SOURCES        += \
     src/main.cpp \
     src/io/screen.cpp \
     src/std/string.cpp \
-    src/mem/globaldescriptortable.cpp
+    src/mem/globaldescriptortable.cpp \
+    src/io/port.cpp \
+    src/io/port8.cpp \
+    src/io/port16.cpp \
+    src/io/port32.cpp
 
 HEADERS        += \
     src/global.h \
     src/io/screen.h \
     src/std/string.h \
-    src/mem/globaldescriptortable.h
+    src/mem/globaldescriptortable.h \
+    src/io/port.h \
+    src/io/port8.h \
+    src/io/port16.h \
+    src/io/port32.h
 
 DISTFILES += \
     readme.md \
