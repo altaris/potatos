@@ -25,13 +25,13 @@ public:
      *
      * Default width of the screen (in characters)
      */
-    static constexpr uint16 width  = 80;
+    static constexpr uint16 WIDTH  = 80;
     /*!
      * \brief Default height
      *
      * Default height of the screen (in characters)
      */
-    static constexpr uint16 height = 25;
+    static constexpr uint16 HEIGHT = 25;
 
     /*!
      * \brief Available colors

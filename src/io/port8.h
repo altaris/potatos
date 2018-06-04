@@ -12,17 +12,27 @@ class Port8 : public io::Port {
 
 public:
 
-    explicit Port8(uint16 port);
+    explicit Port8(uint16 port, bool slow = false);
 
     /*!
      * \brief Reads data from the port
      */
-    virtual inline uint8 read();
+    uint8 read();
 
     /*!
      * \brief Writes data to the port
      */
-    virtual inline void write(uint8 data);
+    void write(uint8 data);
+
+private:
+
+    /*!
+     * \brief If the port is slow
+     *
+     * A slow port waits for io to complete until returning from the write()
+     * method.
+     */
+    bool _slow;
 
 };
 

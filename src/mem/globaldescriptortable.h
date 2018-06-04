@@ -208,7 +208,14 @@ public:
          * \brief Access 8 bits
          * \see mem::GlobalDescriptorTable::SegmentDescriptor::AccessBlock
          */
-        AccessBlock _access;
+        //AccessBlock _access : 8;
+        uint8 _access_accessed : 1;
+        uint8 _access_rw : 1;
+        uint8 _access_dc : 1;
+        uint8 _access_executable : 1;
+        uint8 _access_unused : 1;
+        uint8 _access_privilege : 2;
+        uint8 _access_present : 1;
 
         /*!
          * \brief High 4 bits of limit combined
@@ -219,25 +226,64 @@ public:
          * \brief Flags 4 bits
          * \see mem::GlobalDescriptorTable::SegmentDescriptor::FlagsBlock
          */
-        FlagsBlock _flags;
+        //FlagsBlock _flags : 4;
+        uint8 _flags_unused : 2;
+        uint8 _flags_size : 1;
+        uint8 _flags_granularity : 1;
 
         /*!
          * \brief High 8 bits of base
          */
         uint8 _base_high : 8;
 
-    };
+    } __attribute__((packed));
 
 public:
 
     GlobalDescriptorTable();
 
+    /*!
+     * \brief Selector for code segments
+     * \returns The offset between the gdt and _codeSegmentSelector
+     */
+    uint16 codeSegmentSelector() const;
+
+    /*!
+     * \brief Selector for data segments
+     * \returns The offset between the gdt and _dataSegmentSelector
+     */
+    uint16 dataSegmentSelector() const;
+
+    /*!
+     * \brief Selector for null segments
+     * \returns The offset between the gdt and _nullSegmentSelector
+     */
+    uint16 nullSegmentSelector() const;
+
+    /*!
+     * \brief Selector for unused segments
+     * \returns The offset between the gdt and _unusedSegmentSelector
+     */
+    uint16 unusedSegmentSelector() const;
+
 private:
 
-    Entry _nullSegmentSelector;
-    Entry _unusedSegmentSelector;
+    /*!
+     * \brief GDT Descriptor structure
+     *
+     * Used for the `lgdt` instruction. See https://wiki.osdev.org/GDT
+     */
+    struct Descriptor {
+        uint16 size;
+        uint32 offset;
+    } __attribute__((packed));
+
+private:
+
     Entry _codeSegmentSelector;
     Entry _dataSegmentSelector;
+    Entry _nullSegmentSelector;
+    Entry _unusedSegmentSelector;
 
 };
 

@@ -5,7 +5,7 @@ CONFIG          =
 TEMPLATE        =
 
 QMAKE_CXX       = gcc
-QMAKE_CXXFLAGS  = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings -std=c++11
+QMAKE_CXXFLAGS  = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings -std=c++11 -O0
 QMAKE_LINK      = ld
 QMAKE_LFLAGS    = -melf_i386 -T $${PWD}/linker.ld
 QMAKE_LFLAGS_DEBUG   =
@@ -14,7 +14,8 @@ QMAKE_AS        = as
 QMAKE_ASFLAGS   = --32
 
 SOURCES_ASM    += \
-    src/loader.s
+    src/loader.s \
+    src/hw/interruptstubs.s
 
 asm.input       = SOURCES_ASM
 asm.output      = ${QMAKE_FILE_IN_BASE}$${first(QMAKE_EXT_OBJ)}
@@ -32,7 +33,9 @@ SOURCES        += \
     src/io/port.cpp \
     src/io/port8.cpp \
     src/io/port16.cpp \
-    src/io/port32.cpp
+    src/io/port32.cpp \
+    src/hw/interruptmanager.cpp \
+    src/hw/programmableinterruptcontroller.cpp
 
 HEADERS        += \
     src/global.h \
@@ -42,7 +45,9 @@ HEADERS        += \
     src/io/port.h \
     src/io/port8.h \
     src/io/port16.h \
-    src/io/port32.h
+    src/io/port32.h \
+    src/hw/interruptmanager.h \
+    src/hw/programmableinterruptcontroller.h
 
 DISTFILES += \
     readme.md \

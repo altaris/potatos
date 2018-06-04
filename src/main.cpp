@@ -1,23 +1,26 @@
 #include <global.h>
 
 #include <mem/globaldescriptortable.h>
+#include <hw/interruptmanager.h>
 
 #include <io/screen.h>
 #include <std/string.h>
 
-typedef void (*Constructor)();
+/*!
+ * \brief PIC offset
+ * \see hw::ProgrammableInterruptController
+ */
+constexpr uint8 PIC_OFFSET = 0x20;
 
 /*!
  * \brief Pointer to the begening of the constructor array
  */
-extern "C"
-Constructor start_ctors;
+extern "C" void (*start_ctors)();
 
 /*!
  * \brief Pointer to the end of the constructor array
  */
-extern "C"
-Constructor end_ctors;
+extern "C" void (*end_ctors)();
 
 /*!
  * \brief Calls all constructors
@@ -26,7 +29,7 @@ Constructor end_ctors;
  */
 extern "C"
 void callConstructors() {
-    for (Constructor* i = &start_ctors; i != &end_ctors; i++) {
+    for (void (**i)() = &start_ctors; i != &end_ctors; i++) {
         (*i)();
     }
 }
@@ -38,10 +41,12 @@ void callConstructors() {
  */
 extern "C"
 void kernelMain(const void* multibootStructure, unsigned int multibootMagic) {
+
     UNUSED(multibootStructure);
     UNUSED(multibootMagic);
 
     mem::GlobalDescriptorTable gdt;
+    hw::InterruptManager im(0x20, &gdt);
 
     io::Screen scr;
     scr.clear();
@@ -50,6 +55,12 @@ void kernelMain(const void* multibootStructure, unsigned int multibootMagic) {
               io::Screen::Blue,
               io::Screen::Red);
 
-    while (1) {
+    if (PIC_OFFSET != 0x20) {
+        scr.print(0, 0, std::String("PIC_OFFSET is NOT ok!"));
+    }
+
+    im.activate();
+
+    while (true) {
     }
 }
