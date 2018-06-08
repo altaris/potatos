@@ -174,6 +174,14 @@ private:
 private:
 
     /*!
+     * \brief Fills the IDT
+     * \see _interruptDescriptorTable
+     */
+    void populateIdt(uint8 picOffset, mem::GlobalDescriptorTable* gdt);
+
+private:
+
+    /*!
      * \brief The actual IDT
      */
     static GateDescriptor _interruptDescriptorTable[IDT_SIZE];

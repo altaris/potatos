@@ -19,7 +19,7 @@ public:
      * \todo Terminator control
      * \todo const char version
      */
-    explicit String(char* str);
+    explicit String(const char* str);
 
     /*!
      * \brief Returns character at index
@@ -43,17 +43,14 @@ public:
      */
     char operator[](uint16 i) const;
 
-private:
+    operator const char*() const;
 
-    /*!
-     * \brief Pointer to next string
-     */
-    String* _next = NULL;
+private:
 
     /*!
      * \brief Internal char array
      */
-    char* _str = NULL;
+    const char* _str = NULL;
 
 };
 

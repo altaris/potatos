@@ -10,7 +10,7 @@
 .global handleException\num
 handleException\num:
 #    movb $\num, (interruptnumber)
-#    jmp int_bottom
+    jmp int_bottom
 .endm
 
 DefineHandleException 0x00
@@ -40,7 +40,7 @@ DefineHandleException 0x13
 handleInterrupt\num:
 #    movb $\num + PIC_OFFSET, (interruptnumber)
 #    #pushl $0
-#    jmp int_bottom
+    jmp int_bottom
 .endm
 
 DefineHandleInterrupt 0x00

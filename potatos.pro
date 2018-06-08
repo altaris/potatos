@@ -5,7 +5,7 @@ CONFIG          =
 TEMPLATE        =
 
 QMAKE_CXX       = gcc
-QMAKE_CXXFLAGS  = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings -std=c++11 -O0
+QMAKE_CXXFLAGS  = -m32 -std=c++11 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
 QMAKE_LINK      = ld
 QMAKE_LFLAGS    = -melf_i386 -T $${PWD}/linker.ld
 QMAKE_LFLAGS_DEBUG   =
@@ -35,7 +35,9 @@ SOURCES        += \
     src/io/port16.cpp \
     src/io/port32.cpp \
     src/hw/interruptmanager.cpp \
-    src/hw/programmableinterruptcontroller.cpp
+    src/hw/programmableinterruptcontroller.cpp \
+    src/mem/selector.cpp \
+    src/debug.cpp
 
 HEADERS        += \
     src/global.h \
@@ -47,7 +49,9 @@ HEADERS        += \
     src/io/port16.h \
     src/io/port32.h \
     src/hw/interruptmanager.h \
-    src/hw/programmableinterruptcontroller.h
+    src/hw/programmableinterruptcontroller.h \
+    src/mem/selector.h \
+    src/debug.h
 
 DISTFILES += \
     readme.md \

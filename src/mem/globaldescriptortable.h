@@ -137,60 +137,9 @@ public:
         Entry(uint32 base, uint32 limit, AccessBlock access);
 
         /*!
-         * \brief Returns the 8 access bits
-         */
-        AccessBlock access() const;
-
-        /*!
-         * \brief Returns the 32 base bits
-         */
-        uint32 base() const;
-
-        /*!
-         * \brief Returns the 4 flag bits padded in 8 bits (4 high 0s)
-         */
-        FlagsBlock flags() const;
-
-        /*!
          * \brief Returns the 32 limit bits
          */
         uint32 limit() const;
-
-        /*!
-         * \brief Sets access 8 bits in segment descriptor
-         */
-        void setAccess(AccessBlock access);
-
-        /*!
-         * \brief Sets base 32 bits in segment descriptor
-         */
-        void setBase(uint32 base);
-
-        /*!
-         * \brief Sets the 4 flag bits
-         * \param flags Only the lower 4 bits are considered
-         */
-        void setFlags(FlagsBlock flags);
-
-        /*!
-         * \brief Set limits 32 bits in segment descriptor
-         *
-         * There are two cases:
-         * * If \p limit `<= 65536`, then we use 16 bits address space. The
-         * granularity bit (mem::GlobalDescriptorTable::Entry::_flags)
-         * is set to `0`.
-         * * Otherwise, we have to squeeze the 32 bits limit into 20 bits, hence
-         * discard 12 bits. The CPU will pad the 20 bits limit in the segment
-         * descriptor with 1s.
-         *      - Case 1: If not all of those lower 12 bits are 0, then
-         * discarding them looses information. We still have to do that, but
-         * then the CPU will compute a limit that is higher than the one we
-         * really have, so we compensate by decreasing a higher bit. This trick
-         * yields at most 4095 wasted bytes in memory.
-         *      - Case 2: If the 12 least significant bits are all 1, then we
-         * just discard them, and the CPU will add them back later.
-         */
-        void setLimit(uint32 limit);
 
     private:
 
@@ -208,7 +157,7 @@ public:
          * \brief Access 8 bits
          * \see mem::GlobalDescriptorTable::SegmentDescriptor::AccessBlock
          */
-        //AccessBlock _access : 8;
+        // AccessBlock _access : 8;
         uint8 _access_accessed : 1;
         uint8 _access_rw : 1;
         uint8 _access_dc : 1;
@@ -226,7 +175,7 @@ public:
          * \brief Flags 4 bits
          * \see mem::GlobalDescriptorTable::SegmentDescriptor::FlagsBlock
          */
-        //FlagsBlock _flags : 4;
+        // FlagsBlock _flags : 4;
         uint8 _flags_unused : 2;
         uint8 _flags_size : 1;
         uint8 _flags_granularity : 1;

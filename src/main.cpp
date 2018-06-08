@@ -4,7 +4,8 @@
 #include <hw/interruptmanager.h>
 
 #include <io/screen.h>
-#include <std/string.h>
+
+#include <debug.h>
 
 /*!
  * \brief PIC offset
@@ -41,23 +42,14 @@ void callConstructors() {
  */
 extern "C"
 void kernelMain(const void* multibootStructure, unsigned int multibootMagic) {
-
     UNUSED(multibootStructure);
     UNUSED(multibootMagic);
 
-    mem::GlobalDescriptorTable gdt;
-    hw::InterruptManager im(0x20, &gdt);
-
     io::Screen scr;
     scr.clear();
-    scr.print(1, 1,
-              std::String("Hello World! This is my OS!"),
-              io::Screen::Blue,
-              io::Screen::Red);
 
-    if (PIC_OFFSET != 0x20) {
-        scr.print(0, 0, std::String("PIC_OFFSET is NOT ok!"));
-    }
+    mem::GlobalDescriptorTable gdt;
+    hw::InterruptManager im(0x20, &gdt);
 
     im.activate();
 

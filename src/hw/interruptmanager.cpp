@@ -3,6 +3,8 @@
 #include <io/screen.h>
 #include <std/string.h>
 
+#include <debug.h>
+
 constexpr uint8 TYPE_TASK_32         = 0x5;
 constexpr uint8 TYPE_INTERRUPT_16    = 0x6;
 constexpr uint8 TYPE_TRAP_16         = 0x7;
@@ -16,7 +18,9 @@ hw::InterruptManager* hw::InterruptManager::instance = NULL;
 
 extern "C"
 uint32 handleInterrupt(uint8 interrupt, uint32 esp) {
-    while (true) {}
+    debug::print("INTERRUPT ");
+    debug::print((uint32) interrupt);
+    debug::print('\n');
     return hw::InterruptManager::instance->handleInterrupt(interrupt, esp);
 }
 
@@ -70,10 +74,8 @@ hw::InterruptManager::GateDescriptor::GateDescriptor(
         uint8 type,
         uint8 priviledge) {
     _offset_low = ((uint32) handler) & 0xFFFF;              // NOLINT
-    _offset_high = (((uint32) handler) >> 16) & 0xFFFF;     // NOLINT
-    _present = 0x1;
-    _priviledge = priviledge & 0x3;
     _selector = codeSegmentSelector;
+    _zero = 0x00;
     _type = type & 0xF;
     if (_type == TYPE_INTERRUPT_16 ||
         _type == TYPE_INTERRUPT_32 ||
@@ -83,7 +85,9 @@ hw::InterruptManager::GateDescriptor::GateDescriptor(
     } else {
         _storageSegment = 0x1;
     }
-    _zero = 0;
+    _priviledge = priviledge & 0x3;
+    _present = 0x1;
+    _offset_high = (((uint32) handler) >> 16) & 0xFFFF;     // NOLINT
 }
 
 void hw::InterruptManager::activate() {
@@ -101,15 +105,35 @@ hw::InterruptManager::InterruptManager(
         hw::ProgrammableInterruptController::Slave,
         PIC_SLAVE_PORT,
         picOffset + 8) {
+    instance = this;
 
-    uint16 codeSegment = gdt->codeSegmentSelector();
+    populateIdt(picOffset, gdt);
+
+    Descriptor idtr;
+    idtr.size = hw::InterruptManager::IDT_SIZE * sizeof(GateDescriptor);
+    idtr.offset = (uint32) _interruptDescriptorTable;                           // NOLINT
+    asm volatile("lidt %0" : : "m" (idtr));
+}
+
+uint32 hw::InterruptManager::handleInterrupt(uint8 interrupt, uint32 esp) {
+    UNUSED(interrupt);
+    return esp;
+}
+
+void hw::InterruptManager::populateIdt(
+        uint8 picOffset,
+        mem::GlobalDescriptorTable* gdt) {
+    // uint16 codeSegment = gdt->codeSegmentSelector();
+    uint16 codeSegment = 0x08;
 
     for (uint16 i = 0; i < IDT_SIZE; i++) {
-        setInterruptDescriptorTableEntry(i, GateDescriptor(
-            &::ignoreInterrupt,
-            codeSegment,
-            TYPE_INTERRUPT_32,
-            0));
+        setInterruptDescriptorTableEntry(
+            i,
+            GateDescriptor(
+                &ignoreInterrupt,
+                codeSegment,
+                TYPE_INTERRUPT_32,
+                0));
     }
 
     setInterruptDescriptorTableEntry(
@@ -372,25 +396,6 @@ hw::InterruptManager::InterruptManager(
             codeSegment,
             TYPE_INTERRUPT_32,
             0));
-
-    instance = this;
-
-    Descriptor idtr;
-    idtr.size = hw::InterruptManager::IDT_SIZE * sizeof(GateDescriptor) - 1;
-    idtr.offset = (uint32) _interruptDescriptorTable;                           // NOLINT
-    asm volatile("lidt %0" : : "m" (idtr));
-}
-
-uint32 hw::InterruptManager::handleInterrupt(uint8 interrupt, uint32 esp) {
-    char* msg = "INTERRUPT 0x00";
-    char* hex = "0123456789ABCDEF";
-    msg[12] = hex[(interrupt >> 4) & 0xF];
-    msg[13] = hex[interrupt & 0xF];
-
-    io::Screen scr;
-    scr.print(0, 0, std::String(msg));
-
-    return esp;
 }
 
 void hw::InterruptManager::setInterruptDescriptorTableEntry(

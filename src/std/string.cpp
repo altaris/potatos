@@ -1,7 +1,8 @@
 #include <std/string.h>
 
-std::String::String(char* str) :
+std::String::String(const char* str) :
     _str(str) {
+
 }
 
 char std::String::at(uint16 i) const {
@@ -9,17 +10,16 @@ char std::String::at(uint16 i) const {
 }
 
 unsigned int std::String::length() const {
-    unsigned int i = 0;
+    uint16 i = 0;
     while (_str[i] != '\0') {
         i++;
-    }
-    if (_next) {
-        return i + _next->length();
-    } else {
-        return i;
     }
 }
 
 char std::String::operator[](uint16 i) const {
     return at(i);
+}
+
+std::String::operator const char*() const {
+    return _str;
 }
