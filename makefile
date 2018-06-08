@@ -1,5 +1,5 @@
 CPPLINT   		= tools/cpplint.py
-CPPLINTFILTERS 	= -legal/copyright,-runtime/int,-whitespace/indent
+CPPLINTFILTERS 	= -legal/copyright,-runtime/int,-whitespace/indent,-readability/casting
 
 doc:
 	@doxygen doxyfile

@@ -1,18 +1,18 @@
 #ifndef SRC_IO_PORT8_H_
 #define SRC_IO_PORT8_H_
 
-#include <io/port.h>
+#include <global.h>
 
 namespace io {
 
 /*!
  * \brief 8 bit port
  */
-class Port8 : public io::Port {
+class Port8 {
 
 public:
 
-    explicit Port8(uint16 port, bool slow = false);
+    explicit Port8(uint16 port);
 
     /*!
      * \brief Reads data from the port
@@ -27,12 +27,9 @@ public:
 private:
 
     /*!
-     * \brief If the port is slow
-     *
-     * A slow port waits for io to complete until returning from the write()
-     * method.
+     * \brief Port number
      */
-    bool _slow;
+    uint16 _port;
 
 };
 

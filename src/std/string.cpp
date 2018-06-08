@@ -2,7 +2,6 @@
 
 std::String::String(const char* str) :
     _str(str) {
-
 }
 
 char std::String::at(uint16 i) const {

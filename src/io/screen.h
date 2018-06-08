@@ -101,7 +101,6 @@ private:
     /*!
      * \brief Pointer to video memory
      */
-    // NOLINTNEXTLINE
     static constexpr uint16* _videoMemory = (uint16*) 0xb8000;
 
 private:

@@ -14,10 +14,12 @@ QMAKE_AS        = nasm
 QMAKE_ASFLAGS   = -f elf32
 
 SOURCES_ASM    += \
-    src/loader.asm
+    src/loader.asm \
+    src/io/port8.asm \
+    src/hw/interruptmanager.asm
 
 asm.input       = SOURCES_ASM
-asm.output      = ${QMAKE_FILE_IN_BASE}$${first(QMAKE_EXT_OBJ)}
+asm.output      = ${QMAKE_FILE_IN_BASE}.asm$${first(QMAKE_EXT_OBJ)}
 asm.commands    = $${QMAKE_AS} $${QMAKE_ASFLAGS} ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT}
 QMAKE_EXTRA_COMPILERS += asm
 
@@ -26,23 +28,21 @@ INCLUDEPATH     = \
 
 SOURCES        += \
     src/main.cpp \
-    src/io/port.cpp \
     src/io/port8.cpp \
-    src/io/port16.cpp \
-    src/io/port32.cpp \
     src/io/screen.cpp \
     src/std/string.cpp \
-    src/debug.cpp
+    src/debug.cpp \
+    src/hw/pic.cpp \
+    src/hw/interruptmanager.cpp
 
 HEADERS        += \
     src/global.h \
-    src/io/port.h \
     src/io/port8.h \
-    src/io/port16.h \
-    src/io/port32.h \
     src/io/screen.h \
     src/std/string.h \
-    src/debug.h
+    src/debug.h \
+    src/hw/pic.h \
+    src/hw/interruptmanager.h
 
 DISTFILES += \
     readme.md \

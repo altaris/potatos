@@ -1,7 +1,6 @@
 #ifndef SRC_GLOBAL_H_
 #define SRC_GLOBAL_H_
 
-// NOLINTNEXTLINE
 #define UNUSED(x) (void) x
 
 #define NULL 0
