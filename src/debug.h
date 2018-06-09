@@ -5,6 +5,8 @@
 
 namespace debug {
 
+void clear();
+
 void print(char c);
 
 void print(const char* str);

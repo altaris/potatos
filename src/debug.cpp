@@ -14,6 +14,10 @@ void newLine() {
     currentColumn = 0;
 }
 
+void debug::clear() {
+    screen.clear();
+}
+
 void debug::print(char c) {
     if (c == '\n') {
         newLine();

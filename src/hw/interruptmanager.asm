@@ -1,9 +1,33 @@
 global activateInterrupts
 global loadIdt
 global ignoreInterrupt
-global interrupt0x21
 
-extern handleInterrupt0x21
+%macro DEFINE_INTERRUPT 1
+extern handleInterrupt%1
+global interrupt%1
+interrupt%1:
+	call handleInterrupt%1
+	jmp endOfInterrupt
+%endmacro
+
+DEFINE_INTERRUPT 0x20
+DEFINE_INTERRUPT 0x21
+DEFINE_INTERRUPT 0x22
+DEFINE_INTERRUPT 0x23
+DEFINE_INTERRUPT 0x24
+DEFINE_INTERRUPT 0x25
+DEFINE_INTERRUPT 0x26
+DEFINE_INTERRUPT 0x27
+DEFINE_INTERRUPT 0x28
+DEFINE_INTERRUPT 0x29
+DEFINE_INTERRUPT 0x2A
+DEFINE_INTERRUPT 0x2B
+DEFINE_INTERRUPT 0x2C
+DEFINE_INTERRUPT 0x2D
+DEFINE_INTERRUPT 0x2E
+DEFINE_INTERRUPT 0x2F
+DEFINE_INTERRUPT 0x51
+DEFINE_INTERRUPT 0xA0
 
 activateInterrupts:
 	sti
@@ -18,12 +42,6 @@ endOfInterrupt:
 	iretd			; Return from interrupt
 
 ignoreInterrupt:
-	jmp endOfInterrupt
-
-interrupt0x21:
-;	jmp saveRegisters
-	call handleInterrupt0x21
-;	jmp restoreRegisters
 	jmp endOfInterrupt
 
 loadIdt:

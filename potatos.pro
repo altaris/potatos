@@ -33,7 +33,8 @@ SOURCES        += \
     src/std/string.cpp \
     src/debug.cpp \
     src/hw/pic.cpp \
-    src/hw/interruptmanager.cpp
+    src/hw/interruptmanager.cpp \
+    src/hw/keyboard.cpp
 
 HEADERS        += \
     src/global.h \
@@ -42,7 +43,9 @@ HEADERS        += \
     src/std/string.h \
     src/debug.h \
     src/hw/pic.h \
-    src/hw/interruptmanager.h
+    src/hw/interruptmanager.h \
+    src/hw/keyboard.h \
+    src/std/singleton.h
 
 DISTFILES += \
     readme.md \

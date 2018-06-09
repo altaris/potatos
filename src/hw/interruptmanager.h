@@ -5,9 +5,13 @@
 
 #include <hw/pic.h>
 
+#include <std/singleton.h>
+
 namespace hw {
 
-class InterruptManager {
+class InterruptManager : public std::Singleton<InterruptManager> {
+
+    SINGLETON(InterruptManager)
 
 public:
 
@@ -124,15 +128,47 @@ public:
      */
     void activate();
 
+    /*!
+     * \brief Handles an interrupt
+     */
+    void handleInterrupt(uint16 interrupt);
+
     explicit InterruptManager(uint16 offset);
 
-    void setIdtEntry(uint16 i, GateDescriptor gate);
+    /*!
+     * \brief Sets a callback to be called on interrupt
+     */
+    void setCallback(uint16 interrupt, void (*callback)());
 
 private:
 
+    /*!
+     * \brief Sets an entry in the IDT
+     * \param i Interrupt number
+     * \param callback Function to call upon interrupt
+     */
+    void setIdtEntry(uint16 i, void (*callback)());
+
+private:
+
+    /*!
+     * \brief Callback table
+     */
+    void (*_callbacks[IDT_SIZE])();
+
+    /*!
+     * \brief The IDT
+     */
     GateDescriptor _idt[IDT_SIZE];
 
+    /*!
+     * \brief Master PIC
+     */
     hw::Pic _pic_master;
+
+    /*!
+     * \brief Slave PIC
+     */
     hw::Pic _pic_slave;
 
 };
