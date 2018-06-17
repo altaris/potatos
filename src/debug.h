@@ -3,6 +3,9 @@
 
 #include <std/string.h>
 
+/*!
+ * \brief Provides debug utilities
+ */
 namespace debug {
 
 void clear();

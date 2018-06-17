@@ -9,27 +9,66 @@
 
 namespace hw {
 
+/*!
+ * \brief Interrupt manager
+ *
+ * The main important method is hw::InterruptManager::setCallback to set a
+ * function to be called upon interrupt
+ */
 class InterruptManager : public std::Singleton<InterruptManager> {
 
     SINGLETON(InterruptManager)
 
 public:
 
+    /*!
+     * \brief Size of the IDT
+     */
     static constexpr uint16 IDT_SIZE    = 256;
 
+    /*!
+     * \brief Port of master PIC
+     */
     static constexpr uint16 PIC_MASTER  = 0x20;
+    /*!
+     * \brief Port of slave PIC
+     */
     static constexpr uint16 PIC_SLAVE   = 0xA0;
 
 public:
 
-    class __attribute__((__packed__)) GateDescriptor {
+    /*!
+     * \brief Gate descriptor
+     * \see https://wiki.osdev.org/IDT#Structure_IA-32
+     */
+    class __ATTRIBUTE____PACKED__ GateDescriptor {
 
     public:
 
+        /*!
+         * \brief Type code for a 32 bit task gate
+         * \see _type
+         */
         static constexpr uint8 TYPE_TASK_32         = 0x5;
+        /*!
+         * \brief Type code for a 16 bit interrupt gate
+         * \see _type
+         */
         static constexpr uint8 TYPE_INTERRUPT_16    = 0x6;
+        /*!
+         * \brief Type code for a 16 bit trap gate
+         * \see _type
+         */
         static constexpr uint8 TYPE_TRAP_16         = 0x7;
+        /*!
+         * \brief Type code for a 32 bit interrupt gate
+         * \see _type
+         */
         static constexpr uint8 TYPE_INTERRUPT_32    = 0xE;
+        /*!
+         * \brief Type code for a 32 bit trap gate
+         * \see _type
+         */
         static constexpr uint8 TYPE_TRAP_32         = 0xF;
 
     public:
@@ -73,13 +112,11 @@ public:
 
         /*!
          * \brief Gate type
-         *
-         * Possible IDT gate types :
-         * - `0x5` : 32 bit task gate
-         * - `0x6` : 16-bit interrupt gate
-         * - `0x7` : 16-bit trap gate
-         * - `0xE` : 32-bit interrupt gate
-         * - `0xF` : 32-bit trap gate
+         * \see hw::InterruptManager::TYPE_INTERRUPT_16
+         * \see hw::InterruptManager::TYPE_INTERRUPT_32
+         * \see hw::InterruptManager::TYPE_TASK_32
+         * \see hw::InterruptManager::TYPE_TRAP_16
+         * \see hw::InterruptManager::TYPE_TRAP_32
          */
         uint8 _type : 4;
 
@@ -114,7 +151,12 @@ public:
 
     };
 
-    struct __attribute__((__packed__)) IdtPointer {
+    /*!
+     * \brief Pointer to the IDT
+     *
+     * Used in the asm `lidt` instruction
+     */
+    struct __ATTRIBUTE____PACKED__ IdtPointer {
         uint16 size : 16;
         uint32 offset : 32;
     };
@@ -133,6 +175,10 @@ public:
      */
     void handleInterrupt(uint16 interrupt);
 
+    /*!
+     * \brief Constructor
+     * \param offset Remap offset \see hw::Pic
+     */
     explicit InterruptManager(uint16 offset);
 
     /*!

@@ -2,6 +2,7 @@ CPPLINT   		= tools/cpplint.py
 CPPLINTFILTERS 	= -legal/copyright,-runtime/int,-whitespace/indent,-readability/casting
 
 doc:
+	-mkdir -p src include build/doc > /dev/null 2>&1
 	@doxygen doxyfile
 
 lint:
