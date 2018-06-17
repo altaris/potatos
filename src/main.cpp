@@ -4,16 +4,21 @@
 #include <hw/interruptmanager.h>
 #include <hw/keyboard.h>
 
+#include <mem/descriptormanager.h>
+
 /*!
  * \brief Kernel's main function
  */
 extern "C"
 void kernelMain() {
-    hw::InterruptManager interruptManager(0x20);
-    hw::Keyboard kbd(&interruptManager);
 
     debug::clear();
-    debug::print("Welcome to POTATOS!\nMah dudes\n");
+    debug::print("Welcome to POTATOS mah dudes!\n");
+
+    mem::DescriptorManager descriptorManager;
+
+    hw::InterruptManager interruptManager(&descriptorManager, 0x20);
+    hw::Keyboard kbd(&interruptManager);
 
     interruptManager.activate();
 

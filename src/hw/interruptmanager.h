@@ -5,6 +5,8 @@
 
 #include <hw/pic.h>
 
+#include <mem/descriptormanager.h>
+
 #include <std/singleton.h>
 
 namespace hw {
@@ -179,7 +181,9 @@ public:
      * \brief Constructor
      * \param offset Remap offset \see hw::Pic
      */
-    explicit InterruptManager(uint16 offset);
+    explicit InterruptManager(
+            mem::DescriptorManager* descriptorManager,
+            uint16 offset);
 
     /*!
      * \brief Sets a callback to be called on interrupt
@@ -201,6 +205,12 @@ private:
      * \brief Callback table
      */
     void (*_callbacks[IDT_SIZE])();
+
+    /*!
+     * \brief Pointer to the descriptor manager
+     * \see mem::DescriptorManager
+     */
+    mem::DescriptorManager* _descriptorManager;
 
     /*!
      * \brief The IDT

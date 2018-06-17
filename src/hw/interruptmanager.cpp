@@ -65,8 +65,11 @@ void hw::InterruptManager::handleInterrupt(uint16 interrupt) {
     }
 }
 
-hw::InterruptManager::InterruptManager(uint16 offset) :
+hw::InterruptManager::InterruptManager(
+        mem::DescriptorManager* descriptorManager,
+        uint16 offset) :
     std::Singleton<hw::InterruptManager>(this),
+    _descriptorManager(descriptorManager),
     _pic_master(PIC_MASTER, offset),
     _pic_slave(PIC_SLAVE, offset + 8) {
 
@@ -93,9 +96,10 @@ hw::InterruptManager::InterruptManager(uint16 offset) :
     setIdtEntry(0x51, interrupt0x51);
     setIdtEntry(0xA0, interrupt0xA0);
 
-    IdtPointer idtptr;
-    idtptr.size = sizeof(GateDescriptor) * IDT_SIZE;
-    idtptr.offset = (uint32) _idt;
+    IdtPointer idtptr{
+        .size = sizeof(GateDescriptor) * IDT_SIZE,
+        .offset = (uint32) _idt
+    };
     loadIdt(&idtptr);
 }
 
@@ -106,7 +110,7 @@ void hw::InterruptManager::setCallback(uint16 interrupt, void (*callback)()) {
 void hw::InterruptManager::setIdtEntry(uint16 i, void (*callback)()) {
     _idt[i] = GateDescriptor(
                   callback,
-                  0x08,
+                  _descriptorManager->codeSegmentSelector(), // 0x08,
                   GateDescriptor::TYPE_INTERRUPT_32,
                   0);
 }

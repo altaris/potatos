@@ -16,7 +16,8 @@ QMAKE_ASFLAGS   = -f elf32
 SOURCES_ASM    += \
     src/loader.asm \
     src/io/port8.asm \
-    src/hw/interruptmanager.asm
+    src/hw/interruptmanager.asm \
+    src/mem/descriptormanager.asm
 
 asm.input       = SOURCES_ASM
 asm.output      = ${QMAKE_FILE_IN_BASE}.asm$${first(QMAKE_EXT_OBJ)}
@@ -34,7 +35,9 @@ SOURCES        += \
     src/debug.cpp \
     src/hw/pic.cpp \
     src/hw/interruptmanager.cpp \
-    src/hw/keyboard.cpp
+    src/hw/keyboard.cpp \
+    src/mem/selector.cpp \
+    src/mem/descriptormanager.cpp
 
 HEADERS        += \
     src/global.h \
@@ -45,7 +48,9 @@ HEADERS        += \
     src/hw/pic.h \
     src/hw/interruptmanager.h \
     src/hw/keyboard.h \
-    src/std/singleton.h
+    src/std/singleton.h \
+    src/mem/selector.h \
+    src/mem/descriptormanager.h
 
 DISTFILES += \
     readme.md \

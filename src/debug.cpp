@@ -37,18 +37,18 @@ void debug::print(char c) {
 
 void debug::print(const char* str) {
     for (uint16 i = 0; str[i] != '\0'; i++) {
-        print(str[i]);
+        debug::print((char) str[i]);
     }
 }
 
 void debug::print(const std::String& str) {
-    print((const char*) str);
+    debug::print((const char*) str);
 }
 
 void debug::print(uint32 n) {
     static const char* HEX = "0123456789ABCDEF";
-    print("0x");
+    debug::print("0x");
     for (int i = 7; i >= 0; i--) {
-        print((char) HEX[(n >> (4 * i)) & 0xF]);
+        debug::print((char) HEX[(n >> (4 * i)) & 0xF]);
     }
 }
